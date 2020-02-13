@@ -24,13 +24,15 @@ class StochasticProcess:
     def price(self):
         print("method not defined for base class")
         
-#Black Scholes formula class
+#Black Scholes formula class inherits from StochasticProcess
 class BlackScholesProcess(StochasticProcess):
     def __init__(self, volatility=0.12, maturity=0.25, initial_price=150.0, strike=150.0, risk_free_rate=0.025, dividend=0.0):
         self.sigma = volatility
         StochasticProcess.__init__(self, maturity, initial_price, strike, risk_free_rate, dividend)
     
     def price(self):
+        #analytical solution to Black Scholes
+        
         sigmaRtT = self.sigma * math.sqrt(self.T)
         rSigTerm = (self.r + ((self.sigma**2)/2.0)) * self.T
         d1 = (math.log(self.S/self.K) + rSigTerm) / sigmaRtT
@@ -40,13 +42,15 @@ class BlackScholesProcess(StochasticProcess):
         return term1 - term2
     
     def vega(self):
+        #vega function to be used in Newton's method for implied vol
+        
         sigmaRtT = self.sigma * math.sqrt(self.T)
         rSigTerm = (self.r + ((self.sigma**2)/2.0)) * self.T
         d1 = (math.log(self.S/self.K) + rSigTerm) / sigmaRtT
         phi_d1 = (math.exp(-(d1**2/2)))/(math.sqrt(2*math.pi))
         return self.S*phi_d1*math.sqrt(self.T)
         
-#Heston class
+#Heston class inherits from StochasticProcess
 class HestonProcess(StochasticProcess):
     def __init__(self, vol_of_vol=0.2, initial_vol=0.08, vol_mean_reversion=0.7, bm_correlation=-0.4, vol_mean=0.1, maturity=0.5, initial_price=250, strike=250, risk_free_rate=0.02, dividend=0):
         #Heston parameters
@@ -116,7 +120,7 @@ class HestonProcess(StochasticProcess):
         black_scholes_call = BlackScholesProcess(volatility=sigma, maturity=self.T, initial_price=self.S, strike=self.K, risk_free_rate=self.q, dividend=self.q)
         if abs(black_scholes_call.price() - call_price) < epsilon:
             return sigma
-        else: 
+        else: #Recursion!
             new_sigma = sigma - ((black_scholes_call.price() - call_price)/black_scholes_call.vega())
             return self.implied_vol(call_price, new_sigma)
     
@@ -130,6 +134,7 @@ class FFT:
         self.delta_k = (2*math.pi)/(self.delta_v*self.N)
         
     def fft(self, process):
+        #formulating our problem to work with the fast fourier transform algorithm
         x = numpy.zeros(self.N, dtype=complex)
         big_delta = 0
         
