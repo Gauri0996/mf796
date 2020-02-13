@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[107]:
-
-
 #Robbie Cook
 #rjcook@bu.edu
 #MF796 - Problem set #3
@@ -204,12 +198,6 @@ for i in range(len(strike_targets)):
     print("implied vol = ", implied_vols[i])
     print("--------------")
     
-#test
-#heston = HestonProcess(vol_of_vol=0.4, initial_vol=0.09, vol_mean_reversion=0.5, bm_correlation=0.25, vol_mean=0.12, maturity=0.25, initial_price=150, strike=100, risk_free_rate=0.025)
-#initial_v0_guess = math.sqrt((2*math.pi)/heston.T)*(heston_prices[0]/heston.S)
-#implied_v = heston.implied_vol(heston_prices[0],initial_v0_guess)
-#print(implied_v)
-
 
 # In[114]:
 
@@ -237,17 +225,3 @@ for i in range(len(maturity_targets)):
 #parameters - sigma, v0, kappa, rho, Big_sigma, r
 #volatility skew - plot implied vol (y) vs strike (x)
 #term structure - plot implied vol (y) vs maturity (x)
-
-
-# In[13]:
-
-
-heston = HestonProcess(vol_of_vol=0.2, initial_vol=0.08, vol_mean_reversion=0.7, bm_correlation=-0.4, vol_mean=0.1, maturity=0.5, initial_price=250, strike=250, risk_free_rate=0.02)
-heston.characteristic_function(5)
-
-
-# In[ ]:
-
-
-
-
