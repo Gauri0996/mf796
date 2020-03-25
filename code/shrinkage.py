@@ -26,9 +26,22 @@ class Covariance_Shrinkage():
         N = len(self.corr_mat[0:]) 
         F = np.zeros(  (N,N)   )
         r_bar_sum = 0 
+
         for i in range(0,N-1):
             for j in range(i+1,N):
-                r_bar_sum += corr_mat[i,j]
-        r_bar = 2/(N*(N-1))*r_bar_sum
-        return r_bar
+                r_bar_sum += self.corr_mat[i,j]
+        r_bar = (2/(N*(N-1)))*r_bar_sum
+        
+        for i in range(0,N):
+            for j in range(0,N):
+                if i == j:
+                    F[i,j] = self.cov_mat[i,j]
+                else:
+                    F[i,j] = r_bar * np.sqrt(self.cov_mat[i,i]*self.cov_mat[j,j])
+        return F
+
+test = Covariance_Shrinkage(covariance,correlation)
+F = test.get_F()
+print(F)
+
 
