@@ -71,8 +71,8 @@ class Covariance_Shrinkage():
 test = Covariance_Shrinkage(covariance,correlation)
 F = test.get_F()
 gamma = test.get_gamma()
-pi = test.get_pi()
+#pi = test.get_pi()
 print(F)
 print(gamma)
-print(pi)
+#print(pi)
 
