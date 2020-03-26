@@ -54,8 +54,10 @@ class Covariance_Shrinkage():
 
     def get_pi(self):
         #this takes way too long to run
+        # ^^^ passing the returns either as an argument to this function or in the init might be a good idea (that way T can also be called with self)
         pi = 0
         T = len(returns)
+        #in all the loops below, I think we need to remove the -1. The range function is not inclusive for the last number (i.e. range(3) = [0,1,2])
         for i in range(0,self.N-1):
             for j in range(0,self.N-1):
                 for t in range(0,T-1):
