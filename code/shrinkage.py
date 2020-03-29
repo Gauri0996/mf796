@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 """ Change the path to your path if you are gonna run this """
 george = r"C:\Users\jojis\OneDrive\Documents\GitHub\mf796\data\adjclosepx.csv"
 robbie = "/home/robbie/Documents/MSMF/Spring2020/MF796/project/data/adjclosepx.csv"
-stock_prices = pd.read_csv(george, index_col="Date")
+issy = "/Users/issyanand/Desktop/adjclosepx.csv"
+stock_prices = pd.read_csv(robbie, index_col="Date")
 stock_prices.dropna(inplace=True)
 stock_returns = stock_prices.pct_change(1)
 stock_returns = stock_returns.loc['02/01/2018':'31/12/2019',:]
@@ -79,6 +80,54 @@ class Covariance_Shrinkage():
                     pi += ( (self.ret.iloc[t,i] - self.mean_ret[i])*(self.ret.iloc[t,j] - self.mean_ret[j]) - self.cov_mat[i,j] )**2
         pi  = pi * (1/self.T)
         return pi
+    
+    def get_rho(self):
+        #going to need to pass the same improvements for the pi function through this as otherwise it will also take ages
+        
+        T = len(returns)
+        
+        r_bar_sum = 0 
+
+        for i in range(0,self.N-1):
+            for j in range(i+1,self.N):
+                r_bar_sum += self.corr_mat[i,j]
+        r_bar = (2/(self.N*(self.N-1)))*r_bar_sum
+        
+        sum1 = 0
+        for i in range(self.N):
+            for j in range(self.N):
+                if (j==i)==False:
+                    theta_ii = 0
+                    for t in range(0,T-1):
+                        comp_1 = ((returns.iloc[t:t+1,i:i+1].values[0][0] - returns.loc[: , returns.columns[i]].mean())**2 - self.cov_mat[i,i]) 
+                        comp_2 = ((returns.iloc[t:t+1,i:i+1].values[0][0] - returns.loc[: , returns.columns[i]].mean())*(returns.iloc[t:t+1,j:j+1].values[0][0] - returns.loc[: , returns.columns[j]].mean()) - self.cov_mat[i,j])
+                        theta_ii += comp_1*comp_2
+                    theta_ii *= 1/T
+        
+                    theta_jj = 0
+                    for t in range(0,T-1):
+                        comp_1 = ((returns.iloc[t:t+1,j:j+1].values[0][0] - returns.loc[: , returns.columns[j]].mean())**2 - self.cov_mat[j,j]) 
+                        comp_2 = ((returns.iloc[t:t+1,i:i+1].values[0][0] - returns.loc[: , returns.columns[i]].mean())*(returns.iloc[t:t+1,j:j+1].values[0][0] - returns.loc[: , returns.columns[j]].mean()) - self.cov_mat[i,j])
+                        theta_jj += comp_1*comp_2
+                    theta_jj *= 1/T
+                    
+                    sum1 += r_bar/2*(np.sqrt(self.cov_mat[j][j]/self.cov_mat[i][i])*theta_ii + np.sqrt(self.cov_mat[i][i]/self.cov_mat[j][j])*theta_jj)
+        
+        sum2 = 0
+        for i in range(self.N):
+            for t in range(0,T-1):
+                    sum2 += ((returns.iloc[t:t+1,i:i+1].values[0][0] - returns.loc[: , returns.columns[i]].mean())**2 - self.cov_mat[i,i])**2
+            sum2 *= 1/T
+        
+        rho = sum1 + sum2
+        return rho
+    
+    def get_delta(self):
+        
+        T = len(returns)
+        kappa = (self.get_pi() - self.get_rho())/self.get_gamma()
+        delta = max(0, min(kappa/T,1))
+        return delta
 
 
 #making sure things are working
