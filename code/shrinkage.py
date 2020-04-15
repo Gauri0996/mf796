@@ -13,17 +13,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-""" Change the path to your path if you are gonna run this """
-george = r"C:\Users\jojis\OneDrive\Documents\GitHub\mf796\data\adjclosepx.csv"
-robbie = "/home/robbie/Documents/MSMF/Spring2020/MF796/project/data/adjclosepx.csv"
-issy = "/Users/issyanand/Desktop/adjclosepx.csv"
-stock_prices = pd.read_csv(george, index_col="Date")
-stock_prices.dropna(inplace=True)
-stock_returns = stock_prices.pct_change(1)
-stock_returns = stock_returns.loc['01/10/2019':'31/12/2019',:]
-covariance = stock_returns.cov()
-correlation = stock_returns.corr()
-
 class Covariance_Shrinkage():
 
     def __init__(self,cov_mat, corr_mat, ret):
@@ -113,15 +102,32 @@ class Covariance_Shrinkage():
         shrunk_cov_mat = (delta * self.get_F()) + (1-delta)*self.cov_mat
         return shrunk_cov_mat
 
-#making sure things are working
-test = Covariance_Shrinkage(covariance,correlation, stock_returns)
-# F = test.get_F()
-# print(F)
-# gamma = test.get_gamma()
-# print(gamma)
-# pi = test.get_pi()
-# print(pi)
-# rho = test.get_rho()
-# print(rho)
-shrunk_mat = test.get_shrunk_cov_mat()
-print(shrunk_mat)
+if __name__ == "__main__": 
+
+    """ Change the path to your path if you are gonna run this """
+
+    george = r"C:\Users\jojis\OneDrive\Documents\GitHub\mf796\data\adjclosepx.csv"
+    robbie = "/home/robbie/Documents/MSMF/Spring2020/MF796/project/data/adjclosepx.csv"
+    issy = "/Users/issyanand/Desktop/adjclosepx.csv"
+    stock_prices = pd.read_csv(george, index_col="Date")
+    stock_prices.dropna(inplace=True)
+    stock_returns = stock_prices.pct_change(1)
+    stock_returns = stock_returns.loc['01/10/2019':'31/12/2019',:]
+    covariance = stock_returns.cov()
+    correlation = stock_returns.corr()
+
+    #making sure things are working
+    
+    #test = Covariance_Shrinkage(covariance,correlation, stock_returns)
+    
+    # F = test.get_F()
+    # print(F)
+    # gamma = test.get_gamma()
+    # print(gamma)
+    # pi = test.get_pi()
+    # print(pi)
+    # rho = test.get_rho()
+    # print(rho)
+    
+    # shrunk_mat = test.get_shrunk_cov_mat()
+    # print(shrunk_mat)
