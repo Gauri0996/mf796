@@ -52,6 +52,7 @@ if __name__=="__main__":
     george = r"C:\Users\jojis\OneDrive\Documents\GitHub\mf796\data\adjclosepx.csv"
     robbie = "/home/robbie/Documents/MSMF/Spring2020/MF796/project/data/adjclosepx.csv"
     issy = "/Users/issyanand/Desktop/adjclosepx.csv"
+    gauri = "C:\Users\gauri\OneDrive\Desktop\Spring 2020\MF 796\Project\adjclosepx.csv"
     stock_prices = pd.read_csv(george, index_col="Date")
     stock_prices.dropna(inplace=True)
     stock_returns = stock_prices.pct_change(1)
