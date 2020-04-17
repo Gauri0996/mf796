@@ -1,0 +1,14 @@
+Select a 6-month period 
+Find the stock returns for that period
+Using the optimization code, find the optimal weights 
+   •	For normal cov matrix and shrinkage matrix
+Find the actual returns for month #7 using the weights.
+For month #8 use data from months 2-7 to find optimal weights and so on till month 12. 
+   •	Put all the weights into a data frame
+Using the weights for month 12 calculate the portfolio return 
+Compare this return to the S&P return for that month
+Find Sharpe Ratio 
+Look at the volatility of the weights
+Then decide which method is better based on higher sharpe ratio, less volatility and higher returns for both min variance and mean variance. Also compare for min variance for shrinkage vs normal and mean variance for shrinkage vs normal. 
+Hope shrinkage performs better!
+Try with different periods (depending on the results)
